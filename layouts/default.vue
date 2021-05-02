@@ -1,13 +1,29 @@
 <template>
   <div>
+    <default-header></default-header>
     <Nuxt></Nuxt>
+    <sub-scription></sub-scription>
+    <default-footer></default-footer>
   </div>
 </template>
+defa
+<script>
+import DefaultHeader from '@/components/layout/Header'
+import DefaultFooter from '@/components/layout/Footer'
+import SubScription from '@/components/layout/SubScription'
+export default {
+  components: {
+    DefaultHeader,
+    DefaultFooter,
+    SubScription,
+  },
+}
+</script>
 
 <style>
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;

@@ -26,16 +26,46 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
+    '@nuxtjs/style-resources',
   ],
+  styleResources: {
+    scss: ['./assets/scss/*.scss'],
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'nuxt-fontawesome',
   ],
+
+  fontawesome: {
+    component: 'FontAwesome',
+    imports: [
+      {
+        set: '@fortawesome/free-solid-svg-icons',
+        icons: ['fas'],
+      },
+      {
+        set: '@fortawesome/free-regular-svg-icons',
+        icons: ['far'],
+      },
+      {
+        set: '@fortawesome/free-brands-svg-icons',
+        icons: ['fab'],
+      },
+    ],
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
+
+  router: {
+    // 換頁將網頁捲至最上方
+    scrollBehavior: function () {
+      return { x: 0, y: 0 }
+    },
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

@@ -36,6 +36,7 @@ module.exports = {
         math: 'never',
       },
     ],
+    'vue/no-v-html': 'off',
     'vue/singleline-html-element-content-newline': 'off', // 單行html元素內容在新的一行
     'vue/multiline-html-element-content-newline': 'off', // 多行html元素內容在新的一行
     'vue/html-closing-bracket-newline': 'off', // html右括號在新的一行

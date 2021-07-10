@@ -18,7 +18,7 @@
         <a v-else href="javascript:;" class="header__nav__item-link" @click="signOut">登出</a>
       </li>
       <li class="header__nav__item">
-        <nuxt-link class="header__nav__item-link" to="/shopping">
+        <nuxt-link class="header__nav__item-link" to="/cart">
           <font-awesome icon="shopping-cart" class="icon"></font-awesome>
         </nuxt-link>
       </li>

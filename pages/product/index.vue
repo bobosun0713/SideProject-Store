@@ -7,43 +7,35 @@
       <aside class="product__menu">
         <h1 class="product__menu-title">甜點類別</h1>
         <ul class="menu-list">
-          <li
-            class="menu-list__item"
-            :class="{ 'menu-list__item--active': tabName === '' }"
-            @click="changeProduct('')"
-          >
-            <!-- 所有甜點({{ filterAmount() }}) -->
-            所有甜點
+          <li class="menu-list__item" :class="{ 'menu-list__item--active': tabName === '' }" @click="changeProduct('')">
+            所有甜點({{ filterAmount() }})
           </li>
           <li
             class="menu-list__item"
             :class="{ 'menu-list__item--active': tabName === '本日精選' }"
-            @click="changeProduct('本日精選')"
+            @click="changeProduct('1')"
           >
-            <!-- 本日精選({{ filterAmount('本日精選') }}) -->
-            本日精選
+            本日精選({{ filterAmount('1') }})
           </li>
           <li
             class="menu-list__item"
             :class="{ 'menu-list__item--active': tabName === '人氣推薦' }"
-            @click="changeProduct('人氣推薦')"
+            @click="changeProduct('2')"
           >
-            <!-- 人氣推薦({{ filterAmount('人氣推薦') }}) -->
-            人氣推薦
+            人氣推薦({{ filterAmount('2') }})
           </li>
           <li
             class="menu-list__item"
             :class="{ 'menu-list__item--active': tabName === '新品上市' }"
-            @click="changeProduct('新品上市')"
+            @click="changeProduct('3')"
           >
-            <!-- 新品上市({{ filterAmount('新品上市') }}) -->
-            新品上市
+            新品上市({{ filterAmount('3') }})
           </li>
         </ul>
       </aside>
       <div class="product__list">
         <product-card
-          v-for="product in filterProduct"
+          v-for="product in filterProducts"
           :key="product.id"
           :product="product"
           class="product-card--mb"
@@ -55,13 +47,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-// import ProductCard from '@/components/product/ProductCard.vue'
+import { mapActions, mapState } from 'vuex'
+import ProductCard from '@/components/product/ProductCard.vue'
 // import Pagination from '@/components/Pagination.vue'
 export default {
   name: 'Product',
   components: {
-    // ProductCard,
+    ProductCard,
     // Pagination,
   },
   data() {
@@ -70,35 +62,30 @@ export default {
     }
   },
   computed: {
-    // 取得Vuex資料
-    // getStoreProduct() {
-    //   return this.$store.state.product.productData
-    // },
+    ...mapState('product', ['productList']),
 
     // 計算各類別甜點數量
-    // filterAmount() {
-    //   return (type) => {
-    //     return this.getStoreProduct.filter((product) =>
-    //       !type ? product : product.type === type
-    //     ).length
-    //   }
-    // },
+    filterAmount() {
+      return (type) => {
+        return this.productList.filter((product) => (!type ? product : product.type === type)).length
+      }
+    },
 
     // 過濾甜點種類
-    // filterProduct() {
-    //   return this.getStoreProduct.filter((product) =>
-    //     !this.tabName ? product : product.type === this.tabName
-    //   )
-    // },
+    filterProducts() {
+      return this.productList.filter((product) => (!this.tabName ? product : product.type === this.tabName))
+    },
   },
   mounted() {
-    // this.getProducts()
     // 首頁連結過來時
     this.tabName = this.$route.params.id
+
+    // TODO: 取的Ｖuex product資料
+    this.getProducts()
   },
-  
+
   methods: {
-    ...mapActions(['getProducts']),
+    ...mapActions('product', ['getProducts']),
     changeProduct(tab) {
       this.tabName = tab
     },
@@ -110,8 +97,7 @@ export default {
 .product {
   &__banner {
     margin: 0 auto 60px;
-    background: url('../../assets/image/product/product-4.jpg') no-repeat center
-      center;
+    background: url('../../assets/image/product/product-4.jpg') no-repeat center center;
     background-size: cover;
     width: 940px;
     height: 496px;
@@ -131,8 +117,7 @@ export default {
     }
 
     &__slogan {
-      background: url('../../assets/image/home/home-slogan.svg') no-repeat center
-        center;
+      background: url('../../assets/image/home/home-slogan.svg') no-repeat center center;
       background-size: cover;
       width: 90px;
       height: 330px;

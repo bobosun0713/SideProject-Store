@@ -12,21 +12,21 @@
           </li>
           <li
             class="menu-list__item"
-            :class="{ 'menu-list__item--active': tabName === '本日精選' }"
+            :class="{ 'menu-list__item--active': tabName === '1' }"
             @click="changeProduct('1')"
           >
             本日精選({{ filterAmount('1') }})
           </li>
           <li
             class="menu-list__item"
-            :class="{ 'menu-list__item--active': tabName === '人氣推薦' }"
+            :class="{ 'menu-list__item--active': tabName === '2' }"
             @click="changeProduct('2')"
           >
             人氣推薦({{ filterAmount('2') }})
           </li>
           <li
             class="menu-list__item"
-            :class="{ 'menu-list__item--active': tabName === '新品上市' }"
+            :class="{ 'menu-list__item--active': tabName === '3' }"
             @click="changeProduct('3')"
           >
             新品上市({{ filterAmount('3') }})
@@ -78,8 +78,7 @@ export default {
   },
   mounted() {
     // 首頁連結過來時
-    this.tabName = this.$route.params.id
-
+    this.tabName = this.$route.params.productType || ''
     // TODO: 取的Ｖuex product資料
     this.getProducts()
   },

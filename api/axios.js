@@ -8,7 +8,6 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     config.params = {
-      ...config.params,
       key: 'AIzaSyBMGOT6H_wIOZhYXqUsyzvpMNSgZhoXcbQ',
     }
     return config
@@ -17,7 +16,6 @@ service.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-
 service.interceptors.response.use(
   (response) => {
     return response.data
@@ -27,8 +25,8 @@ service.interceptors.response.use(
   }
 )
 
-const get = (url, params, config = {}) => service.get(url, { params, ...config })
-const post = (url, params, config = {}) => service.post(url, { params, ...config })
+const get = (url, params, config = {}) => service.get(url, params, config)
+const post = (url, params, config = {}) => service.post(url, params, config)
 
 export default {
   get,

@@ -37,6 +37,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     'nuxt-fontawesome',
+    'cookie-universal-nuxt',
   ],
 
   fontawesome: {

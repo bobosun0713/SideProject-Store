@@ -1,63 +1,65 @@
 <template>
   <div class="home">
-     <!-- 封面 -->
+    <!-- 封面 -->
     <section class="home-banner">
       <ul class="banner__group">
         <li class="banner__group__item">
-          <img
-            class="banner__group__item-img"
-            src="../assets/image/product/product-7.jpg"
-            alt=""
-          />
-          <div class="banner__group__item-link" @click="goProduct('本日精選')">
-            本日精選
-          </div>
+          <img class="banner__group__item-img" src="../assets/image/product/product-7.jpg" alt="" />
+          <div class="banner__group__item-link" @click="goProduct('1')">本日精選</div>
         </li>
         <li class="banner__group__item">
-          <img
-            class="banner__group__item-img"
-            src="../assets/image/product/product-5.jpg"
-            alt=""
-          />
-          <div class="banner__group__item-link" @click="goProduct('人氣推薦')">
-            人氣推薦
-          </div>
+          <img class="banner__group__item-img" src="../assets/image/product/product-5.jpg" alt="" />
+          <div class="banner__group__item-link" @click="goProduct('2')">人氣推薦</div>
         </li>
         <li class="banner__group__item">
-          <img
-            class="banner__group__item-img"
-            src="../assets/image/product/product-6.jpg"
-            alt=""
-          />
-          <div class="banner__group__item-link" @click="goProduct('新品上市')">
-            新品上市
-          </div>
+          <img class="banner__group__item-img" src="../assets/image/product/product-6.jpg" alt="" />
+          <div class="banner__group__item-link" @click="goProduct('3')">新品上市</div>
         </li>
       </ul>
     </section>
-     <!-- 介紹 -->
+    <!-- 介紹 -->
     <home-info></home-info>
     <home-info :type="true"></home-info>
-       <!-- slogan -->
+    <!-- slogan -->
     <section class="home-slogan"></section>
-      <!-- 商品 -->
+    <!-- 商品 -->
     <section class="home-products">
-      <product-card
-        v-for="product in filterTodayProduct"
-        :key="product.id"
-        :product="product"
-      ></product-card>
+      <product-card v-for="product in filterTodayProducts" :key="product.id" :product="product"></product-card>
     </section>
   </div>
 </template>
 
 <script>
 import HomeInfo from '@/components/home/HomeInfo'
+import ProductCard from '@/components/product/ProductCard.vue'
+import { mapActions, mapState } from 'vuex'
+
 export default {
-  name:'Home',
-  components:{
-    HomeInfo
-  }
+  name: 'Home',
+  components: {
+    HomeInfo,
+    ProductCard,
+  },
+  mounted() {
+    this.getProducts()
+  },
+  computed: {
+    ...mapState('product', ['productList']),
+    filterTodayProducts() {
+      return this.productList.filter((item) => item.type === '1')
+    },
+  },
+  methods: {
+    ...mapActions('product', ['getProducts']),
+    goProduct(val) {
+      this.$router.push({
+        name: 'product',
+        params: {
+          productType: val,
+        },
+      })
+    },
+  },
 }
 </script>
 
@@ -67,8 +69,7 @@ export default {
     width: 940px;
     height: 496px;
     margin: 0 auto 240px;
-    background: url('../assets/image/home/home-banner.jpg') no-repeat center
-      center;
+    background: url('../assets/image/home/home-banner.jpg') no-repeat center center;
     background-size: cover;
 
     transition: all 0.5s;
@@ -89,15 +90,13 @@ export default {
   // slogan
   &-slogan {
     margin: 0 auto 105px;
-    background: url('../assets/image/home/home-slogan.svg') no-repeat center
-      center;
+    background: url('../assets/image/home/home-slogan.svg') no-repeat center center;
     width: 90px;
     height: 330px;
 
     // ====== RWD  ======
     @include RWD_768 {
-      background: url('../assets/image/home/home-slogan-rwd.svg') no-repeat
-        center center;
+      background: url('../assets/image/home/home-slogan-rwd.svg') no-repeat center center;
       width: 225px;
       height: 60px;
       margin: 0 auto 30px;

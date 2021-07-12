@@ -5,7 +5,7 @@
       <div class="login-form__item">
         <font-awesome :icon="['fas', 'user']" class="icon"></font-awesome>
         <input
-          v-model.trim="email"
+          v-model.trim="userInfo.email"
           class="login-form__item-input"
           type="text"
           placeholder="電子信箱/手機號碼"
@@ -14,75 +14,74 @@
       <div class="login-form__item">
         <font-awesome :icon="['fas', 'key']" class="icon"></font-awesome>
         <input
-          v-model.trim="password"
+          v-model.trim="userInfo.password"
           class="login-form__item-input"
           type="password"
           placeholder="請輸入使用者密碼"
         />
       </div>
       <div class="login-form__item">
-        <input
-          id="remember"
-          type="checkbox"
-          class="login-form__item-checkbox"
-        />
+        <input id="remember" type="checkbox" class="login-form__item-checkbox" />
         <label for="remember" class="login-form__item-label">記住我</label>
       </div>
-      <button type="button" class="login-form__button" @click="signIn">
-        登入帳號
-      </button>
+      <button type="button" class="login-form__button" @click="signIn">登入帳號</button>
     </form>
     <div class="login-other">
       <h2 class="login-other__title">連結社群帳號</h2>
       <div class="login-other__link">
-        <img
-          class="login-other__link-img"
-          src="@/assets/image/login/login-fb.png"
-          alt=""
-        />
+        <img class="login-other__link-img" src="@/assets/image/login/login-fb.png" alt="" />
       </div>
       <div class="login-other__link">
-        <img
-          class="login-other__link-img"
-          src="@/assets/image/login/login-google.png"
-          alt=""
-        />
+        <img class="login-other__link-img" src="@/assets/image/login/login-google.png" alt="" />
       </div>
       <div class="login-other__link">
-        <img
-          class="login-other__link-img"
-          src="@/assets/image/login/login-yahoo.png"
-          alt=""
-        />
+        <img class="login-other__link-img" src="@/assets/image/login/login-yahoo.png" alt="" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import { User } from '@/db'
-// import MessageDialog from '@/mixin/message.js'
+import { mapActions, mapState } from 'vuex'
+import { apiHandleSignIn } from '@/api'
+
 export default {
   name: 'Login',
-//   mixins: [MessageDialog],
+  middleware: ['checkuser'],
   data() {
     return {
-      email: 'admin@gmail.com',
-      password: 'admin1234',
+      userInfo: {
+        email: 'test@gmail.com',
+        password: '123456',
+      },
     }
   },
+  computed: {
+    ...mapState('login', ['isLogin']),
+  },
   methods: {
-    // signIn() {
-    //   User.signInWithEmailAndPassword(this.email, this.password)
-    //     .then(() => {
-    //       this.$store.dispatch('signIn', User.currentUser.uid)
-    //       this.MessageDialog('success', '登入成功', false)
-    //       this.$router.push('/')
-    //     })
-    //     .catch(() => {
-    //       this.MessageDialog('error', '登入失敗，再試一次！', false)
-    //     })
-    // },
+    ...mapActions('login', ['setLogin']),
+
+    signIn() {
+      apiHandleSignIn(this.userInfo)
+        .then((res) => {
+          this.setLogin(res)
+          this.$message({
+            showClose: true,
+            message: '登入成功',
+            type: 'success',
+          })
+          this.$router.push('/')
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$message({
+            showClose: true,
+            message: err,
+            type: 'warning',
+          })
+        })
+    },
   },
 }
 </script>

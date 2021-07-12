@@ -14,7 +14,7 @@
         <nuxt-link class="header__nav__item-link" to="/product">甜點</nuxt-link>
       </li>
       <li class="header__nav__item">
-        <nuxt-link v-if="true" class="header__nav__item-link" to="/login">登入</nuxt-link>
+        <nuxt-link v-if="!isLogin" class="header__nav__item-link" to="/login">登入</nuxt-link>
         <a v-else href="javascript:;" class="header__nav__item-link" @click="signOut">登出</a>
       </li>
       <li class="header__nav__item">
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'Header',
   data() {
@@ -39,7 +41,7 @@ export default {
     }
   },
   computed: {
-    // ...mapGetters(['getUserInfo']),
+    ...mapState('login', ['isLogin']),
   },
   watch: {
     $route() {
@@ -48,28 +50,18 @@ export default {
     },
   },
   methods: {
+    ...mapActions('login', ['setLoginOut']),
     toggleMenu() {
       this.isToggleMenu = !this.isToggleMenu
     },
-    // signOut() {
-    //   this.$confirm(`確定登出?`, '登出', {
-    //     customClass: 'message-logout',
-    //     confirmButtonText: '確定',
-    //     cancelButtonText: '取消',
-    //     type: 'warning',
-    //   })
-    //     .then(() => {
-    //       User.signOut().then(() => {
-    //         this.$store.dispatch('signOut')
-    //         this.$router.go(0)
-    //         this.MessageDialog('success', '已登出', false)
-    //       })
-    //     })
-    //     .catch(() => {
-    //       this.MessageDialog('warning', '已取消登出', true)
-    //     })
-    // },
-
+    signOut() {
+      this.setLoginOut()
+      this.$message({
+        showClose: true,
+        message: '登出成功',
+        type: 'success',
+      })
+    },
     goHome() {
       this.$router.push('/')
     },

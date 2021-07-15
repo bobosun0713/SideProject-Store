@@ -5,7 +5,7 @@ export const state = () => ({
 
 export const mutations = {
   SET_USER_TOKEN(state, value) {
-    state.userToken = value.localId
+    state.userToken = value
   },
   SET_IS_LOGIN(state, value) {
     state.isLogin = value
@@ -17,7 +17,7 @@ export const actions = {
     this.$cookies.set('USER_TOKEN', value.localId)
     this.$cookies.set('IS_LOGIN', true)
 
-    commit('SET_USER_TOKEN', value)
+    commit('SET_USER_TOKEN', value.localId)
     commit('SET_IS_LOGIN', true)
   },
 

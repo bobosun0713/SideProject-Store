@@ -15,19 +15,16 @@
         <div class="card__body__info-name">{{ product.name }}</div>
         <div class="card__body__info-price">NT$ {{ product.price }}</div>
       </div>
-      <button type="button" class="card__body__button" @click="addToCart">加入購物車</button>
+      <button type="button" class="card__body__button" :disabled="isAddLoading" @click="addToCart">加入購物車</button>
     </div>
   </div>
 </template>
 
 <script>
-// import firebase from 'firebase'
-// import { collectionCart } from '@/db'
-import { mapGetters, mapActions } from 'vuex'
-// import NotifiCation from '@/mixin/notification.js'
+import { apiSetProductInCart } from '@/api'
+import { mapActions } from 'vuex'
 export default {
   name: 'ProductCard',
-  // mixins: [NotifiCation],
   props: {
     product: {
       type: Object,
@@ -35,32 +32,37 @@ export default {
         return {}
       },
     },
+    userToken: {
+      type: String,
+      require: true,
+    },
+    isLogin: {
+      type: Boolean,
+      require: true,
+    },
+    cartList: {
+      type: Array,
+      require: true,
+    },
   },
   data() {
     return {
-      productId: +new Date(),
       productData: {
-        id: '',
         name: this.product.name,
         price: this.product.price,
         image: this.product.image,
         quantity: 1,
       },
+      isAddLoading: false,
     }
   },
-
   computed: {
-    ...mapGetters(['getUserInfo', 'getCartList']),
-
-    ...mapGetters('product', ['productList']),
-    CartList() {
-      return this.productList.filter((item) => item.name === this.productData.name).length
+    checkCartRepeat() {
+      return this.cartList.filter((item) => item.name === this.product.name).length
     },
   },
   methods: {
-    ...mapActions(['getCart']),
-
-    // TODO:
+    ...mapActions('cart', ['getCarts']),
     transformProductType(value) {
       const type = new Map([
         ['1', '本日精選'],
@@ -69,48 +71,43 @@ export default {
       ])
       return type.get(value)
     },
-
-    // 加入購物車
     addToCart() {
       if (!this.checkUserInfo()) return
       if (!this.checkCartList()) return
-      this.getCart()
-
-      // collectionCart
-      //   .doc(this.getUserInfo)
-      //   .update({
-      //     products: firebase.firestore.FieldValue.arrayUnion(this.productData),
-      //   })
-      //   .then(() => {
-      //     this.NotifiCation('成功', 'success', '已新增一筆至購物車')
-      //   })
-
-      // let docId = `${this.getUserInfo}/products/${this.productId}`
-      // this.productData.id = this.productId
-      // collectionCart
-      //   .doc(docId)
-      //   .set({
-      //     ...this.productData,
-      //   })
-      //   .then(() => {
-      //     this.NotifiCation('成功', 'success', '已新增一筆至購物車')
-      //   })
+      this.isAddLoading = true
+      apiSetProductInCart(this.userToken, this.productData).then(() => {
+        this.$notify({
+          title: '購物車通知',
+          type: 'success',
+          message: `商品『${this.product.name}』已加入購物車`,
+          showClose: true,
+        })
+        this.isAddLoading = false
+        this.getCarts(this.userToken)
+      })
     },
 
-    // 判斷是否登入
     checkUserInfo() {
-      if (!this.getUserInfo) {
-        this.NotifiCation('未登入', 'error', '以跳轉至登入頁')
-        this.$router.push('/login')
+      if (!this.isLogin) {
+        this.$notify({
+          title: '購物車通知',
+          type: 'error',
+          message: '請先登入',
+          showClose: true,
+        })
         return false
       }
       return true
     },
 
-    // 判斷否登入
     checkCartList() {
-      if (this.CartList) {
-        this.NotifiCation('提醒', 'warning', '購物車已有這筆資料')
+      if (this.checkCartRepeat) {
+        this.$notify({
+          title: '購物車通知',
+          type: 'warning',
+          message: `商品『${this.product.name}』已存在購物車`,
+          showClose: true,
+        })
         return false
       }
       return true

@@ -16,7 +16,10 @@ export const actions = {
     let res = await apiGetProducts()
     let list = []
     for (let item in res) {
-      list.push(res[item])
+      list.push({
+        id: item,
+        ...res[item],
+      })
     }
     commit('SET_PRODUCT_DATA', list)
   },

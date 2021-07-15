@@ -27,8 +27,12 @@ service.interceptors.response.use(
 
 const get = (url, params, config = {}) => service.get(url, params, config)
 const post = (url, params, config = {}) => service.post(url, params, config)
+const put = (url, params, config = {}) => service.put(url, params, config)
+const del = (url, params, config = {}) => service.delete(url, params, config)
 
 export default {
   get,
   post,
+  put,
+  del,
 }

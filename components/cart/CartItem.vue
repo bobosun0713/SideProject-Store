@@ -7,42 +7,23 @@
         <div class="cart-item__group-price">NT$ {{ product.price }}</div>
       </div>
       <div class="amount__control">
-        <button
-          class="amount__control-button"
-          :disabled="isAddLoading"
-          @click="
-            clickAmount(-1),
-            addCartQuantity({ getUserInfo, cartProduct, product })
-          "
-        >
-          -
-        </button>
-        <span class="amount__control-num">{{ product.quantity }}</span>
-        <button
-          class="amount__control-button"
-          :disabled="isAddLoading"
-          @click="
-            clickAmount(1),
-            addCartQuantity({ getUserInfo, cartProduct, product })
-          "
-        >
-          +
-        </button>
+        <button class="amount__control-button" @click="clickAmount(-1)">-</button>
+        <span class="amount__control-num">{{ cartProduct.quantity }}</span>
+        <button class="amount__control-button" @click="clickAmount(1)">+</button>
       </div>
     </div>
+    <div class="cart-item__group">NT$ {{ product.price * product.quantity }}</div>
     <div class="cart-item__group">
-      NT$ {{ product.price * product.quantity }}
-    </div>
-    <div class="cart-item__group">
-      <button @click="deleteCart({ getUserInfo, product })">
-        <font-awesome icon="trash-alt" class="icon "></font-awesome>
+      <button @click="deleteProduct()">
+        <font-awesome icon="trash-alt" class="icon"></font-awesome>
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import { apiSetProductQuantity, apiDelProductInCart } from '@/api'
 export default {
   name: 'CartItem',
   props: {
@@ -58,25 +39,48 @@ export default {
       cartProduct: {
         ...this.product,
       },
+      timer: null,
     }
   },
   computed: {
-    ...mapGetters(['getUserInfo', 'getCartList']),
+    ...mapState('login', ['isLogin', 'userToken']),
     isAddLoading() {
       return this.$store.state.cart.isAddLoading
     },
   },
   methods: {
-    ...mapActions(['deleteCart', 'addCartTotal', 'addCartQuantity']),
+    ...mapActions('cart', ['getCarts']),
     clickAmount(num) {
       let numTotal = this.cartProduct.quantity + num
       if (numTotal < 1) {
-        this.quantity = 1
+        numTotal = 1
       } else if (numTotal > this.cartProduct.quantity) {
         this.cartProduct.quantity = numTotal
       } else {
         this.cartProduct.quantity = numTotal
       }
+      this.debounceAPI(numTotal, 300)
+    },
+
+    debounceAPI(num, time) {
+      clearInterval(this.timer)
+      this.timer = setTimeout(() => {
+        apiSetProductQuantity(this.userToken, this.product.id, num).then(() => {
+          this.getCarts(this.userToken)
+        })
+      }, time)
+    },
+
+    deleteProduct() {
+      apiDelProductInCart(this.userToken, this.product.id).then(() => {
+        this.getCarts(this.userToken)
+        this.$notify({
+          title: '購物車通知',
+          type: 'warning',
+          message: `商品『${this.product.name}』購物車已移除`,
+          showClose: true,
+        })
+      })
     },
   },
 }
@@ -134,7 +138,7 @@ export default {
       }
     }
     &-info {
-      margin-right: 50px;
+      margin-right: 25px;
       // ====== RWD  ======
       @include RWD_576 {
         margin-right: 35px;

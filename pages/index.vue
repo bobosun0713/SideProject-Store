@@ -24,7 +24,14 @@
     <section class="home-slogan"></section>
     <!-- 商品 -->
     <section class="home-products">
-      <product-card v-for="product in filterTodayProducts" :key="product.id" :product="product"></product-card>
+      <product-card
+        v-for="product in filterTodayProducts"
+        :key="product.id"
+        :product="product"
+        :is-login="isLogin"
+        :user-token="userToken"
+        :cart-list="cartList"
+      ></product-card>
     </section>
   </div>
 </template>
@@ -42,8 +49,11 @@ export default {
   },
   mounted() {
     this.getProducts()
+    this.getCarts(this.userToken)
   },
   computed: {
+    ...mapState('login', ['isLogin', 'userToken']),
+    ...mapState('cart', ['cartList']),
     ...mapState('product', ['productList']),
     filterTodayProducts() {
       return this.productList.filter((item) => item.type === '1')
@@ -51,6 +61,8 @@ export default {
   },
   methods: {
     ...mapActions('product', ['getProducts']),
+    ...mapActions('cart', ['getCarts']),
+
     goProduct(val) {
       this.$router.push({
         name: 'product',

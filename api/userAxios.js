@@ -36,6 +36,8 @@ signIn.interceptors.request.use(
     config.params = {
       key: 'AIzaSyBMGOT6H_wIOZhYXqUsyzvpMNSgZhoXcbQ',
     }
+    console.log('config', config)
+
     return config
   },
   (error) => {

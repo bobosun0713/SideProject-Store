@@ -6,7 +6,6 @@
     <default-footer></default-footer>
   </div>
 </template>
-defa
 <script>
 import DefaultHeader from '@/components/layout/Header'
 import DefaultFooter from '@/components/layout/Footer'

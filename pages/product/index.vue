@@ -38,6 +38,9 @@
           v-for="product in filterProducts"
           :key="product.id"
           :product="product"
+          :user-token="userToken"
+          :is-login="isLogin"
+          :cart-list="cartList"
           class="product-card--mb"
         ></product-card>
         <!-- <pagination></pagination> -->
@@ -47,7 +50,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import ProductCard from '@/components/product/ProductCard.vue'
 // import Pagination from '@/components/Pagination.vue'
 export default {
@@ -62,16 +65,15 @@ export default {
     }
   },
   computed: {
+    ...mapState('login', ['userToken', 'isLogin']),
     ...mapState('product', ['productList']),
+    ...mapState('cart', ['cartList']),
 
-    // 計算各類別甜點數量
     filterAmount() {
       return (type) => {
         return this.productList.filter((product) => (!type ? product : product.type === type)).length
       }
     },
-
-    // 過濾甜點種類
     filterProducts() {
       return this.productList.filter((product) => (!this.tabName ? product : product.type === this.tabName))
     },
@@ -79,12 +81,14 @@ export default {
   mounted() {
     // 首頁連結過來時
     this.tabName = this.$route.params.productType || ''
-    // TODO: 取的Ｖuex product資料
     this.getProducts()
+    this.getCarts(this.userToken)
   },
 
   methods: {
     ...mapActions('product', ['getProducts']),
+    ...mapActions('cart', ['getCarts']),
+
     changeProduct(tab) {
       this.tabName = tab
     },

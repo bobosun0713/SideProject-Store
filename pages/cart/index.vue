@@ -3,15 +3,16 @@
     <div class="cart-list">
       <h1 class="cart-list__title">您的購物車</h1>
       <div class="cart-list__container">
-        <!-- <template v-if="getCartList.length !== 0"> -->
-        <cart-item
-          v-for="(product, idx) in getCartList"
-          :key="product.name"
-          :product="product"
-          :index="idx"
-        ></cart-item>
-        <!-- </template> -->
-        <!-- <h2 v-else class="cart-list__container-else">無商品資料</h2> -->
+        <template v-if="cartList.length">
+          <cart-item
+            v-for="(product, idx) in cartList"
+            :key="product.name"
+            :product-no="product.id"
+            :product="product"
+            :index="idx"
+          ></cart-item>
+        </template>
+        <h2 v-else class="cart-list__container-else">無商品資料</h2>
       </div>
     </div>
     <div class="cart-order">
@@ -19,18 +20,15 @@
       <ul class="cart-order__list">
         <li class="cart-order__list-item">
           <span class="list-title">小計</span>
-          <span class="list-price">NT$ {{ getCartTotal }}</span>
+          <span class="list-price">NT$ {{ cartTotal }}</span>
         </li>
         <li class="cart-order__list-item">
           <span class="list-title">運費</span>
-          <span class="list-price">NT$ {{ getFareTotal }}</span>
+          <span class="list-price">NT$ {{ fareTotal }}</span>
         </li>
         <li class="cart-order__list-item">
           <span class="list-title">總計</span>
-          <span class="list-price"
-          >NT$
-            {{ getCartTotal === 0 ? 0 : getCartTotal + getFareTotal }}</span
-          >
+          <span class="list-price">NT$ {{ cartTotal === 0 ? 0 : cartTotal + fareTotal }}</span>
         </li>
       </ul>
       <button class="cart-order__button" @click="goCheckout">結帳</button>
@@ -39,32 +37,25 @@
 </template>
 
 <script>
-// import { mapActions, mapGetters } from 'vuex'
-// import NotifiCation from '@/mixin/notification.js'
-// import CartItem from '@/components/shoppingcart/CartItem.vue'
+import CartItem from '@/components/cart/CartItem.vue'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
-  name: 'ShoppingCart',
+  name: 'Cart',
   components: {
-    // CartItem,
-  },
-//   mixins: [NotifiCation],
-  data() {
-    return {}
+    CartItem,
   },
   computed: {
-    // ...mapGetters(['getCartTotal', 'getCartList']),
-
-    // getFareTotal() {
-    //   return this.$store.state.cart.fareTotal
-    // },
+    ...mapState('cart', ['cartList', 'fareTotal']),
+    ...mapGetters('cart', ['cartTotal']),
+    ...mapState('login', ['userToken']),
   },
   mounted() {
-    // this.getCart()
+    this.getCarts(this.userToken)
   },
   methods: {
-    // ...mapActions(['getCart']),
+    ...mapActions('cart', ['getCarts']),
     goCheckout() {
-      if (!this.getCartList.length) {
+      if (!this.cartList.length) {
         this.NotifiCation('錯誤', 'error', '目前購物車沒有商品！')
         return
       }
@@ -111,6 +102,8 @@ export default {
   &__container {
     display: flex;
     flex-direction: column;
+    max-height: 400px;
+    overflow-y: scroll;
 
     // 無商品的時候
     &-else {

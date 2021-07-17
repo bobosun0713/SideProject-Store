@@ -1,4 +1,4 @@
-import axios from './userAxios'
+import axios from './setting/userAxios'
 
 // 登入
 export const handleSignUp = ({ email, password }) => axios.signUpPost({ email, password })

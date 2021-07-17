@@ -1,4 +1,4 @@
-import axios from './axios'
+import axios from '../setting/axios'
 
 // 產品
 export const setProductInCart = (id, args) => axios.post(`/cart/${id}.json`, { ...args })

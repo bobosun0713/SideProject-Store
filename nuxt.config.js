@@ -70,6 +70,14 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: [/^element-ui/],
+    transpile: ['element-ui', 'vee-validate/dist/rules'],
+    uglify: {
+      uglifyOption: {
+        comments: false,
+        compress: {
+          drop_console: true,
+        },
+      },
+    },
   },
 }

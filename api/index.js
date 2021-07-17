@@ -1,6 +1,6 @@
-import { getProducts } from './product'
 import { handleSignUp, handleSignIn } from './login'
-import { setProductInCart, getProductInCart, setProductQuantity, delProductInCart } from './cart'
+import { getProducts } from './front/product'
+import { setProductInCart, getProductInCart, setProductQuantity, delProductInCart } from './front/cart'
 
 // 產品
 export const apiGetProducts = getProducts

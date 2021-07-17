@@ -24,7 +24,7 @@
         </li>
         <li class="cart-order__list-item">
           <span class="list-title">運費</span>
-          <span class="list-price">NT$ {{ fareTotal }}</span>
+          <span class="list-price">NT$ {{ isLogin ? fareTotal : 0 }}</span>
         </li>
         <li class="cart-order__list-item">
           <span class="list-title">總計</span>
@@ -47,9 +47,10 @@ export default {
   computed: {
     ...mapState('cart', ['cartList', 'fareTotal']),
     ...mapGetters('cart', ['cartTotal']),
-    ...mapState('login', ['userToken']),
+    ...mapState('login', ['isLogin', 'userToken']),
   },
   mounted() {
+    if (!this.isLogin) return
     this.getCarts(this.userToken)
   },
   methods: {

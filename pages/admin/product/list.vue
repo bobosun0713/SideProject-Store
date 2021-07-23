@@ -1,10 +1,10 @@
 <template>
-  <h1>我可愛後台</h1>
+  <h1>產品專區</h1>
 </template>
 
 <script>
 export default {
-  name: 'AdminHome',
+  name: 'ProductList',
   layout: 'admin',
 }
 </script>

@@ -11,6 +11,6 @@ export const apiGetProductInCart = getProductInCart
 export const apiSetProductQuantity = setProductQuantity
 export const apiDelProductInCart = delProductInCart
 
-// 登入
+// 登入/註冊
 export const apiHandleSignUp = handleSignUp
 export const apiHandleSignIn = handleSignIn

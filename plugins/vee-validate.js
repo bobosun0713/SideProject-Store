@@ -2,9 +2,6 @@ import Vue from 'vue'
 import { ValidationProvider, ValidationObserver, extend } from 'vee-validate'
 import { required, email } from 'vee-validate/dist/rules'
 
-Vue.component('ValidationProvider', ValidationProvider)
-Vue.component('ValidationObserver', ValidationObserver)
-
 extend('email', {
   ...email,
   message: 'Email格式錯誤',
@@ -24,3 +21,6 @@ extend('image', {
   ...required,
   message: '至少上傳一張圖片',
 })
+
+Vue.component('ValidationProvider', ValidationProvider)
+Vue.component('ValidationObserver', ValidationObserver)

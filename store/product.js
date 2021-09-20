@@ -13,8 +13,8 @@ export const mutations = {
 
 export const actions = {
   async getProducts({ commit }) {
-    let res = await apiGetProducts()
-    let list = []
+    const res = await apiGetProducts()
+    const list = []
     for (let item in res) {
       list.push({
         id: item,

@@ -1,0 +1,72 @@
+.admin {
+  width: 100%;
+
+  &-button {
+    border: 0;
+    border-radius: 5px;
+    padding: 8px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 1px 1px 2px map-get($theme-colors, shadow);
+    background-color: map-get($theme-colors, dark-blue);
+    color: map-get($theme-colors, light);
+    transition: all 0.3s;
+
+    &:active,
+    &:hover {
+      background-color: map-get($theme-colors, light-green);
+      box-shadow: 0 0 0;
+      transform: translateY(0.5px);
+    }
+  }
+
+  &-search {
+    background-color: map-get($theme-colors, light);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+
+    &__header {
+      padding: 8px 0;
+    }
+
+    &__body {
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+      padding: 16px 0;
+      margin-bottom: 16px;
+    }
+
+    &__footer {
+      text-align: right;
+    }
+  }
+
+  &-list {
+    background-color: map-get($theme-colors, light);
+    border-radius: 10px;
+    padding: 24px;
+
+    &__table {
+      margin-bottom: 24px;
+    }
+  }
+
+  // 表單區
+  &-form {
+    background-color: map-get($theme-colors, light);
+    padding: 32px 24px;
+    border-radius: 10px;
+
+    &-btns {
+      display: flex;
+      justify-content: center;
+    }
+
+    &-form-block {
+      &__title {
+        margin-bottom: 4px;
+      }
+    }
+  }
+}

@@ -1,9 +1,13 @@
 <template>
-  <div>
+  <div class="default-admin">
     <admin-sidebar :is-open-sidebar="isOpenSidebar"></admin-sidebar>
     <div class="backend" :class="{ 'backend--active': isOpenSidebar }">
       <admin-header v-model="isOpenSidebar"></admin-header>
-      <Nuxt></Nuxt>
+      <div class="backend-wrapper">
+        <transition name="v" mode="out-in">
+          <Nuxt></Nuxt>
+        </transition>
+      </div>
     </div>
   </div>
 </template>
@@ -27,25 +31,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
 .backend {
   margin-left: 200px;
   transition: all 0.5s;
@@ -53,5 +38,32 @@ html {
   &--active {
     margin-left: 50px;
   }
+
+  &-wrapper {
+    background-color: #373e57;
+    min-height: calc(100vh - 112px);
+    padding: 24px;
+  }
+}
+
+// transition
+.v-leave {
+  opacity: 1;
+}
+.v-leave-active {
+  transition: opacity 0.6s;
+}
+.v-leave-to {
+  opacity: 0;
+}
+
+.v-enter {
+  opacity: 0;
+}
+.v-enter-active {
+  transition: opacity 0.6s;
+}
+.v-enter-to {
+  opacity: 1;
 }
 </style>

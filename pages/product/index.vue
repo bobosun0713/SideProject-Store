@@ -98,7 +98,6 @@ export default {
       return this.filterProducts.slice(startPage, startPage + this.perPage)
     },
     totalPage() {
-      console.log('totalPage->', Math.ceil(this.filterProducts.length / this.perPage))
       return Math.ceil(this.filterProducts.length / this.perPage)
     },
   },

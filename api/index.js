@@ -2,6 +2,8 @@ import { handleSignUp, handleSignIn } from './login'
 import { getProducts } from './front/product'
 import { setProductInCart, getProductInCart, setProductQuantity, delProductInCart } from './front/cart'
 
+//===== front
+
 // 產品
 export const apiGetProducts = getProducts
 
@@ -14,3 +16,5 @@ export const apiDelProductInCart = delProductInCart
 // 登入/註冊
 export const apiHandleSignUp = handleSignUp
 export const apiHandleSignIn = handleSignIn
+
+//===== backend

@@ -89,7 +89,6 @@ export default {
     }
 
     &-logout {
-      cursor: pointer;
       display: block;
       width: 120px;
       padding: 10px 10px;

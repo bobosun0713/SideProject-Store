@@ -14,10 +14,17 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['element-ui/lib/theme-chalk/index.css', '@/assets/plugin/notifications.css'],
+  css: ['element-ui/lib/theme-chalk/index.css', '@/assets/plugin/notifications.css', '@/assets/scss/main.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['@/plugins/element-ui', '@/plugins/vee-validate'],
+  plugins: [
+    '@/plugins/element-ui',
+    '@/plugins/vee-validate',
+    {
+      src: '@/plugins/vue-core-image-upload',
+      mode: 'client',
+    },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -28,8 +35,9 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/style-resources',
   ],
+
   styleResources: {
-    scss: ['./assets/scss/*.scss'],
+    scss: ['assets/scss/helpers/_color.scss', 'assets/scss/helpers/_font.scss', 'assets/scss/base/_media.scss'],
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -41,6 +49,7 @@ export default {
   ],
 
   fontawesome: {
+    // 引入所有
     component: 'FontAwesome',
     imports: [
       {

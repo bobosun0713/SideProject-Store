@@ -7,7 +7,7 @@
     <!-- 側邊選單 -->
     <ul class="sidebar-list">
       <sidebar-item
-        v-for="item in menuList"
+        v-for="item in transformMenuList"
         :key="item.name"
         :item="item"
         :is-open-sidebar="isOpenSidebar"
@@ -33,6 +33,17 @@ export default {
   },
   computed: {
     ...mapState('admin', ['menuList']),
+    transformMenuList() {
+      const menuList = this.menuList.map((item) => {
+        return {
+          icon: item.icon,
+          link: item.link,
+          name: item.name,
+          ...(item.children && { children: item.children.filter((child) => !child.link.includes('edit')) }),
+        }
+      })
+      return menuList
+    },
   },
   methods: {
     goAdminHome() {

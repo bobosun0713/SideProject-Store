@@ -1,13 +1,8 @@
 <template>
   <ul class="breadcrumb">
     <li v-if="breadCrumbList.length > 1" class="breadcrumb__links" @click="routerTo('/admin')">首頁</li>
-    <li
-      v-for="(breadcrumb, index) in breadCrumbList"
-      :key="index"
-      class="breadcrumb__links"
-      @click="routerTo(breadcrumb.link)"
-    >
-      {{ breadcrumb.name }}
+    <li v-for="(breadcrumb, index) in breadCrumbList" :key="index" class="breadcrumb__links">
+      {{ breadcrumb }}
     </li>
   </ul>
 </template>
@@ -23,14 +18,21 @@ export default {
   },
   computed: {
     ...mapState('admin', ['menuList']),
+    fullPath() {
+      return this.$route.fullPath
+    },
   },
   watch: {
     $route: {
       immediate: true,
       handler(val) {
         let urlPathName = val.fullPath.split('/')[2]
-        let urlChildren = this.menuList.filter((parentItem) => parentItem.link.includes(urlPathName))[0]
-        this.breadCrumbList = urlChildren ? urlChildren.children : [{ name: '首頁' }]
+        let urlActionName = val.fullPath.split('/')[3]
+        let urlChildren = this.menuList.find((parentItem) => parentItem.link.includes(urlPathName)) || {}
+        console.log(val.fullPath)
+        this.breadCrumbList = Object.values(urlChildren).length
+          ? [urlChildren.name, urlChildren.children.find((item) => item.link.includes(urlActionName)).name]
+          : ['首頁']
       },
     },
   },

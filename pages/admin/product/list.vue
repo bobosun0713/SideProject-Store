@@ -42,10 +42,10 @@
         <el-table-column prop="price" label="價錢" align="center"></el-table-column>
         <el-table-column prop="amount" label="庫存" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
-          <!-- <template slot-scope="scope"> -->
-          <el-button type="text">編輯</el-button>
-          <el-button type="text">刪除</el-button>
-          <!-- </template> -->
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleEdit(scope.row.id)">編輯</el-button>
+            <el-button type="text" @click="handleDelete(scope.row.id)">刪除</el-button>
+          </template>
         </el-table-column>
       </el-table>
 
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { apiGetProducts } from '@/api'
+import { apiGetProducts, apiDelProduct } from '@/api'
 export default {
   name: 'ProductList',
   layout: 'admin',
@@ -129,6 +129,36 @@ export default {
         }
       })
       this.searchList = tempList
+    },
+    handleEdit(val) {
+      this.$router.push(this.$router.push(`/admin/product/edit/${val}`))
+    },
+
+    handleDelete(val) {
+      this.$confirm('確定要刪除嗎？', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '刪除',
+        cancelButtonText: '取消',
+      })
+        .then(() => {
+          this.isLoading = true
+          apiDelProduct(val).then(() => {
+            this.$message({
+              title: '刪除通知',
+              type: 'success',
+              message: `產品刪除成功`,
+              showClose: true,
+            })
+            this.isLoading = false
+            this.fetchProducts()
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消刪除',
+          })
+        })
     },
   },
 }

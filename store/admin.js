@@ -27,6 +27,11 @@ export const state = () => ({
           icon: 'pencil-alt',
           link: '/admin/product/add',
         },
+        {
+          name: '編輯產品',
+          icon: 'pencil-alt',
+          link: '/admin/product/edit',
+        },
       ],
     },
     {

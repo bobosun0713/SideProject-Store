@@ -33,18 +33,17 @@ export default {
   },
   methods: {
     handleImageFillIn(val) {
-      this.imageData = val
       const reader = new FileReader()
       reader.readAsDataURL(val)
       reader.onload = (e) => {
         this.showImage = e.target.result
+        this.$emit('update', this.showImage)
       }
-      this.$emit('updateImage', this.imageData)
     },
     handleDelete() {
       this.showImage = ''
       this.imageData = ''
-      this.$emit('updateImage', this.imageData)
+      this.$emit('update', this.showImage)
     },
   },
 }

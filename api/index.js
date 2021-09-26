@@ -1,6 +1,7 @@
 import { handleSignUp, handleSignIn } from './login'
 import { getProducts } from './front/product'
 import { setProductInCart, getProductInCart, setProductQuantity, delProductInCart } from './front/cart'
+import { uploadImage, getProductDetail, addProduct, delProduct, upDateProduct } from './admin/product'
 
 //===== front
 
@@ -18,3 +19,8 @@ export const apiHandleSignUp = handleSignUp
 export const apiHandleSignIn = handleSignIn
 
 //===== backend
+export const apiUploadImage = uploadImage
+export const apiProductDetail = getProductDetail
+export const apiAddProduct = addProduct
+export const apiUpdateProduct = upDateProduct
+export const apiDelProduct = delProduct

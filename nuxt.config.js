@@ -71,6 +71,12 @@ export default {
   axios: {},
 
   router: {
+    ...(process.env.DEPLOY_ENV === 'GH_PAGES' && {
+      router: {
+        base: '/SideProject-Store/',
+      },
+    }),
+
     // 換頁將網頁捲至最上方
     scrollBehavior: function () {
       return { x: 0, y: 0 }

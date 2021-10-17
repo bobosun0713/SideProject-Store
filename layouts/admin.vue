@@ -22,6 +22,7 @@ export default {
     AdminSidebar,
     AdminHeader,
   },
+  middleware: ['admin'],
   data() {
     return {
       isOpenSidebar: false,

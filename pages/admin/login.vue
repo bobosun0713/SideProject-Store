@@ -39,7 +39,7 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Login',
-  layout: 'admin',
+  layout: 'empty',
   data() {
     return {
       adminUserInfo: {

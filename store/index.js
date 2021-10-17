@@ -1,4 +1,5 @@
 export const actions = {
+  // 如靜態部署到github時，這個ServiceInit就不會執行
   nuxtServerInit({ commit }, context) {
     const $cookie = context.app.$cookies
 

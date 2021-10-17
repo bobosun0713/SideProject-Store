@@ -89,12 +89,12 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import { apiHandleSignIn, apiHandleSignUp } from '@/api'
 
 export default {
   name: 'Login',
-  middleware: ['checkuser'],
+  middleware: ['checkUser'],
   data() {
     return {
       userInfo: {
@@ -110,9 +110,6 @@ export default {
 
       isChangeForm: false,
     }
-  },
-  computed: {
-    ...mapState('login', ['isLogin']),
   },
   methods: {
     ...mapActions('login', ['setLogin']),

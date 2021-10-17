@@ -24,7 +24,7 @@
         </li>
         <li class="cart-order__list-item">
           <span class="list-title">運費</span>
-          <span class="list-price">NT$ {{ isLogin ? fareTotal : 0 }}</span>
+          <span class="list-price">NT$ {{ checkoutLogin() ? fareTotal : 0 }}</span>
         </li>
         <li class="cart-order__list-item">
           <span class="list-title">總計</span>
@@ -39,22 +39,33 @@
 <script>
 import CartItem from '@/components/cart/CartItem.vue'
 import { mapState, mapActions, mapGetters } from 'vuex'
+import checkoutLogin from '@/mixin/checkoutLogin'
 export default {
   name: 'Cart',
   components: {
     CartItem,
   },
+  mixins: [checkoutLogin],
   computed: {
     ...mapState('cart', ['cartList', 'fareTotal']),
-    ...mapGetters('cart', ['cartTotal']),
     ...mapState('login', ['isLogin', 'userToken']),
+    ...mapGetters('cart', ['cartTotal']),
   },
+
   mounted() {
-    if (!this.isLogin) return
-    this.getCarts(this.userToken)
+    this.fetchCartList()
   },
   methods: {
     ...mapActions('cart', ['getCarts']),
+    fetchCartList() {
+      // TODO: 這邊取值有兩種，一種為vuex、另一種為cookies，主要因為要部署在github pages，因為是靜態部署所以在nuxtServiceInit是不會執行的
+      // TODO: 所以這邊就用兩種方式取值，取Vuex或cookies其中一個。
+      const IS_LOGIN = this.isLogin || this.$cookies.get('IS_LOGIN')
+      const USER_TOKEN = this.userToken || this.$cookies.get('USER_TOKEN')
+      if (IS_LOGIN) {
+        this.getCarts(USER_TOKEN)
+      }
+    },
     goCheckout() {
       if (!this.cartList.length) {
         this.NotifiCation('錯誤', 'error', '目前購物車沒有商品！')

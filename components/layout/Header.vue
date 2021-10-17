@@ -14,7 +14,7 @@
         <nuxt-link class="header__nav__item-link" to="/product">甜點</nuxt-link>
       </li>
       <li class="header__nav__item">
-        <nuxt-link v-if="!isLogin" class="header__nav__item-link" to="/login">登入</nuxt-link>
+        <nuxt-link v-if="!checkoutLogin()" class="header__nav__item-link" to="/login">登入</nuxt-link>
         <a v-else href="javascript:;" class="header__nav__item-link" @click="signOut">登出</a>
       </li>
       <li class="header__nav__item">
@@ -32,9 +32,10 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-
+import checkoutLogin from '@/mixin/checkoutLogin'
 export default {
   name: 'Header',
+  mixins: [checkoutLogin],
   data() {
     return {
       isToggleMenu: false,

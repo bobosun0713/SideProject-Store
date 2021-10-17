@@ -72,9 +72,7 @@ export default {
 
   router: {
     ...(process.env.DEPLOY_ENV === 'GH_PAGES' && {
-      router: {
-        base: '/SideProject-Store/',
-      },
+      base: '/SideProject-Store/',
     }),
 
     // 換頁將網頁捲至最上方

@@ -4,7 +4,6 @@
 set -e
 
 # generate 生成dist檔
-npm run deploy:build
 npm run deploy:github
 
 # navigate into the build output directory
